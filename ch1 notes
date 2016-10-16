@@ -1,0 +1,14 @@
+What is an algorithm?
+    -algorithm is a sequence of computational steps that transform the
+     input into the output.
+
+An instance of the problem
+    -is the input of the problem
+
+A correct algorithm
+    -is considered so if it HALTS with the correct output.
+
+NP-complete problems
+    -problems for which there is no known efficient algorithm
+    -if an efficient solution exists for one, then one exists for all of them
+

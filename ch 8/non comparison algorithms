@@ -1,0 +1,26 @@
+Counting sort
+    -assumes input in the range of 0 to k
+    -for each element of the input, it determines the number of elements less than x. it uses this information to
+    directly place x into the results array.
+    -we must allow same values or else all input values must be distinct.
+    - need to modify the algorithm a bit to accomodate for repeating values
+    -need two arrays : a results array B, and a cache (temp working storage) array C.
+
+Radix sort
+    -https://www.youtube.com/watch?v=dHeTp6hO71U
+    -start from the right most digit (least significant digit) of every element.
+    -place them in bins labelled 0 to 9, by their current digit.
+    -put them back in order of placement in 0-9 bins back into the list
+    -repeat for the other digits
+    -the digit sorts at each phase MUST be stable at all steps
+    -worst case running time :  O(kn) where k is the longest number of digits of an element, and n is the number of items in the list.
+
+Extra notes
+    -charAt is faster than accessing string index.
+
+Bucket sort
+    -assumes input is drawn from a uniform distribution and has an avg running time of O(n)
+    -uniform distribution - a set where all numbers are distinct and has an equal chance of occuring
+    -bucket sort divides the interval 0 to 1 into n-equal sized subintervals, or buckets.
+    -then distributes the n input numbers into the buckets
+    -then sort the number in each bucket and go through the buckets in order

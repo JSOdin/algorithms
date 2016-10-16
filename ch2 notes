@@ -1,0 +1,85 @@
+Insertion sort
+    -an algorithm efficient for sorting small number of elements
+    -sorting IN PLACE. original array is mutated
+    -start iterating on the second element (i=1)
+    -compare to the subset array(0, i-1);
+    -using a while loop, compare and swap if necessary.
+    -each iteration is going over every element in the subset and swapping two values at a time.
+
+    Insert-Sort algorithm
+
+    function insertSort(arr){
+        for (var i= 1; i<arr.length;i++) {
+            var curr = arr[i];
+            var j = i - 1;
+            while (j >= 0 && arr[j] > curr) {
+                var temp = arr[j + 1];
+                arr[j + 1] = arr[j];
+                arr[j] = temp;
+                j--;
+            }
+        }
+    }
+
+Loop invariant
+    -any condition that is true before a loop, anytime during the loop, and after the loop.
+    -not the loop checking expression like
+        while (here){}
+
+    -you can make up any loop invariant as long as it fits the criteria
+
+    var n = 8;
+    for (var x = 0; x < 7; i++){
+        n--;
+    }
+
+    -here a loop invariant would be n + x == 8;
+    -properties of of a loop invariant:
+
+    1) initialization: it is true prior to the first iteration of loop
+    2) maintenance: if it is true before an iteration of a loop, it remains true before the next iteration
+    3) termination : when the loop terminates, the invariant gives us a useful property that helps show the algorithm is correct.
+
+    -we typically use the loop invariant along with the condition that caused the loop to terminate to determine algorithm correctness.
+    -in the insert-sort example, the loop invariant is "the subarray A[0, i-1] consists of the elements originally in A[0,i-1] but in sorted order."
+    -at the first "i", there is only one element which is technically "sorted", and it is part of the A[0,0] subarray.
+
+Random-Access Machine model (RAM model)
+    -in RAM model, instructions are executed one after another with no concurrent operation
+
+Analysis of insertion-sort
+    -time taken is dependant on number of elements in the sequence
+    -also on how nearly sorted the elements are
+    -INPUT SIZE: many algorithm-related problems have input size dependant on simply number of items in the input. others are number of bits
+    (for example multiplying different size integers). other times there can be two inputs, such as the number of vertices and edges in a graph.
+    -RUNNING TIME: not measured in seconds, but number of primitive operations or "steps" executed
+
+    -best case running time can be abstracted to a linear function :  t= a*n + b where n is size of input and a,b are arbitrary constants
+    -worse case running time : t = an^2 + bn+c
+    -this book looks at worst cases only (it provides an upper bound for running time)
+    -order of growth depends on n^2 as n gets significantly large.
+    -constants a, b, or c are negligeble
+    -lower order of growth = more efficient (n^2 is more efficient than n^3)
+    -an algorithm may be more efficient dealing with small numbers due to its low coefficient (a,b,c,....), but perform worse for larger if its rate of growth is higher than another algorithm.
+
+divide-and-conquer approach
+    -recursion
+    -steps:
+
+    1) DIVIDE the problem into a number of subproblems that are smaller instances of the same problem
+    2) CONQUER the subproblems by solving them recursively. If the subproblem sizes are small enough, however, just solve the subproblems in a straightforward manner.
+    3) COMBINE the solutions to the subproblems into the solution for the original problem.
+
+Merge sort follows the divide-and-conquer paradigm
+    1) DIVIDE: the n-element sequence to be sorted into two subsequences of n/2 elements each.
+    2) CONQUER: sort the two subsequences recursively using merge sort.
+    3) COMBINE: Merge the two sorted subsequences to produce the sorted answer.
+
+Running time Theta notation
+    t = an^2 + b*n + c
+
+    ==> can be estimated to
+
+    THETA(n^2)
+
+    ==> because for large numbers b*n and c are negligeble

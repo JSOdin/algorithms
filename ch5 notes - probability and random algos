@@ -1,0 +1,288 @@
+The hiring problem
+    -hire the best candidate out of a pool of 1 to n.
+
+    function hireAssistant(candidates){
+        var best = 0;
+        for (var i=0; i<candidates.length; i++){
+              if (candidates[i] > best){  // if candidate is better than the current best.
+                best = candidates[i];
+                // do the hiring of candidate...
+              }
+        }
+    }
+
+Worst case of hiring problem
+    -hire every candidate wwe interview because candidates came in increasing order of quality.
+
+    for all cases:
+
+    Cost(n) = O(ci * n + ch * m); where  // ci = interview cost per candidate     ch = hiring cost per candidate
+                                          // n = interviewees  m = number of hired
+
+    worst case:
+
+    Cost(n) = O(ch * m); // hiring cost far exceeds interviewing costs so ci*n is absorbed
+
+Using probabilistic analysis
+
+    -we first assume the distribution of inputs to be a certain way
+    -then compute average-case running time, taking the average over the distribution of possible inputs.
+    -in effect, we average the running time over all the possible inputs.
+    -such a running time is called "average-case running time";
+    -"total order" refers to a set of items of which each can be paired with any other item in the set and be related by some criteria
+    -given a list of applicants, any permutation of their ordering is equally likely, including one where it lists from worst to best.
+    -we say this is "uniform random permutation"
+
+Randomized algorithms
+    -we often dont know much about distribution of inputs
+    -we call an algorithm "randomized" if its behavior is determined not only by the input but also by values produced by a random-number
+    generator (RNG)
+    -a RNG may generate any number that is independent of any previous rolls and of equal probability.
+
+    -we determine average-case running time when we know the distribution of inputs, and
+    expected running time when the algorithm itself makes random choices
+
+INdicator random variables
+    -if in a sample space S and an event A, then the IRV I{A} associated with event A is defined as
+
+    I{A} = { 1   if A occurs
+
+            } 0 if A doesnt occur
+
+    -in short, the possible outcomes of an event
+
+    -Example
+
+    define a indicator random variable Xh, the event of a coin coming up heads.
+    sample space : S = {H,T}; Pr{H} = Pr{T} = 1/2 (probability)
+    Event : H
+
+    Xh = I{H}
+       = { 1 if H occurs. (Head occurs once)
+
+         } 0 if T occurs (Head occurs zero times)
+
+    calculate expected number of heads obtained in one flip of a coin is the expected value of our indicator variable Xh
+
+    E[Xh] = E[I{H}]
+          = 1 * Pr{H} + 0 * Pr{T}
+          = 1 * (1/2) + 0 * (0/2)
+          = 1/2
+
+    Expected number of heads obtained by one flip of a fair coin is 1/2. equal to the probability that event H occurs
+
+    -Expected value of a IVR is the probability that the event occurs.
+
+    E[Xh] = Pr{A};
+
+Calculate expected number of heads in n flips
+
+    X =  < n SUM i=1 > Xi   // X denotes the random variable over n flips
+
+    E[X] = E[ < n SUM i=1 > Xi ];
+
+    given that E[Xa] = Pr{A}
+
+    and E[X+Y] = E[X] + E[Y];
+
+    we get
+
+    E[X] = < n SUM i=1 > E[Xi]
+    E[X] = < n SUM i=1 > 1/2
+         = n/2
+
+     If we flip a coin 10 times, the expected number of heads is 10/2 = 5 times.
+
+Example of another EV calculation
+
+    E[X] = < SUM x > x * Pr{X=x};
+
+    For each heads, win $3 and for each tail, lose $2
+
+    so
+
+    E[your earnings in two flips] = 6 * Pr{2H} + 1 * Pr{1H,1T} - 4*Pr{2T};
+                                  = 6 * 1/4 + 1 * 1/2 - 4 * 1/4 = 1;
+
+Hiring problem analysis using IRV
+
+    -calculate the expected number of times we hire a new office assistant.
+    -to use probabilistic analysis, we must assume candidates arrive in random order.
+
+    define variables Xi
+
+    Xi = I{candidate i is hired};
+
+       = { 1 if candidate i is hired
+
+         } 0 if candidate i is not hired
+
+     and
+
+     X = X1 + X2 + X3 ... + Xn;  // X being the number of hires
+
+     E[Xi] = Pr{candidate i is hired}
+
+    -candidate i is hired when it is better than each of the i-1 candidates that came before him. so candidate has a
+    1/i chance of being better than candidates 1 through i - 1, thus a 1/i probability of being hired.
+
+    so
+
+    E[Xi] = 1/i;
+
+    Compute E[X]
+
+    E[X] = E[<n sum i=1 > Xi]
+         = <n sum i=1 > E[Xi]
+         = <n sum i=1 > 1/i;
+         = ln n + O(1)   // number hired
+
+     -Thus the average case total hiring cost of O(ch * ln n). compare this with the worst case hiring cost O(ch * n);
+
+When conducting a probabilistic analysis,
+    -don't assume a random distribution
+    -force a random distribution ourselves
+    -in our hiring example, algorithm is very deterministic ;  E[X] = ln n +0(1) ==> for any batch of n candidates, the number hired is the same.
+    -also, for different n, E[X] is always different.
+    -by implementing an input randomizer in the algorithm itself, we can get rid of the assumption that the input is random.
+
+Randomized-hire-assistant algorithm
+
+    Randomized-hire-assistant(n)
+        randomly permute the list of candidates (done in permuteBySorting)
+        best = 0;
+        for i=1 to n
+            interview candidate i
+            if (candidate i > best){
+                best = i;
+                hire candidate i;
+            }
+
+Randomly permuting inputs
+    -one method is to assign each element with a random priority P[i], then sort the input by the priority
+
+    function permuteBySorting(A){
+        var n = A.length;
+        var p = [];
+        for (var k=0; k<n;k++){
+            p[k] = ~~(Math.random()*Math.pow(n,3)); // the array by which we want to sort another.
+        }
+
+        for (var j=0; j< p.length;j++){
+            var curr = p[j];
+            var l = j-1;
+            while (l >=0 && p[l] > curr){
+                var temp = p[l+1];            // sort A in the same order as we sort p.
+                p[l+1] = p[l];
+                p[l] = temp;
+
+                var tempA = A[l+1];
+                A[l+1] = A[l];
+                A[l] = tempA;
+                l--
+            }
+        }
+    }
+
+ Birthday Paradox
+    -calculate how many people must there be in a room before there is a 50% chance that two of them were born on the same day of the year.
+
+    -assign each person with an integer, 1 up to k.
+    -there are k people in the room.
+    -n = 365days
+    -b(i) is the birthday of a person, where  1<=i<=k and     1<=r<=n   1<=b(i) <=n
+    -Pr{b(i) = r} = 1/n; for i = 1,2,3....k and r = 1,2,3....n
+    -assume selection of birthdays are independent.
+    -the probability that two people i and j fall on single day r is:
+
+    P{b(i) = r and b(j) = r} = P{b(i)=r} * P{b(j)=r} = 1/n^2
+
+    -the sum of all probabilities that two birthdays land on any same day is:
+
+    Pr{b(i) = b(j)} = <r=1 SUM r=n> Pr {b(i) = r and b(j) = r} = <r=1 SUM r=n> (1/n^2) = 1/n;
+
+ Online hiring problem
+    -out of a group of candidates 1 to n, we wish to pick the best qualified candidate ONCE.
+    -reject the first 1 to k applicants no matter what, but keep the best score.
+    -return the next best candidate from k+1 to n. if no candidate bests 1 to k, then return the nth candidate.
+
+    ONLINE-MAXIMUM(k,n){
+        var bestscore = -Infinity;
+        var candidates = [5,1,3,6,7,1,2,4,3];
+        for (var i=0; i<=k; i++){
+           if (candidates[i] > bestscore){
+                bestscore = candidates[i];
+           }
+        }
+
+        for (var j=k+1; j<=n-1; j++){
+            if (candidates[j] > bestscore){
+                return j;
+            }
+        }
+
+        return n;
+    }
+
+    -let S be the event of finding the best-qualified applicant
+    -let S(i) be the event that the best-qualified applicant is the ith one interviewed (in the group of k+1 to n);
+    -since all the S(i) are disjoint (none of them are dependent on any other, and only one can happen at a time)
+
+    Pr{S} = <i=1 SUM i=n> Pr{S(i)}; // sum of all probabilities of (S(i)) for 1 to n.
+
+    since we never succeed in hiring a candidate from 1 to k,  Pr{S} for 1....k is 0.
+
+    thus,
+
+    Pr{S} = <i=k+1 SUM i=n> Pr{S(i)};  // sum of probabilities of (S(i)) for the k+1 to n group
+
+        -for the best-qualified applicant to be the ith one, some basic things must be met:
+        1) best-qualified applicant must be in position i (event B)
+        2) algorithm must not select any applicant from positions k+1 to i-1
+        3) scores of k+1 to i-1 must be less than M(k) (max score of 1 to k)
+
+    -O(i) denotes the event that none of the applicants in positions k+1 through i-1 are chosen.
+    -O(i) depends on the relative ordering of values from positions 1 through i-1;
+    -B(i) depends only on whether the value in position i is greater than the values in all other positions
+    -O(i) does not affect B(i) and B(i) does not affect O(i)
+
+    thus
+
+    Pr{Si} = Pr{B(i) INTERSECT O(i)} = Pr{Bi} * Pr{O(i)};
+
+    -Pr{B(i)} is 1/n for any i, because the best qualifying applicant can be in any position
+    -Pr{O(i)} is k/(i-1) because the maximum value in positions 1 through i-1, which is equally likely to be in any of these i-1 positions, must be in the first k positions (k positions out of a possible i-1 positions);
+
+    using Pr{S} = <i=1 SUM i=n> Pr{S(i)},
+
+    Pr{S} = <i=k+1 SUM i=n> Pr{S(i)};
+          = <i=k+1 SUM i=n> k/(n(i-1));   // 1/n  *  k/(i-1)
+          = k/n <i=k+1 SUM i=n> 1/(i-1);
+          = k/n <i=k SUM i=n-1> 1/i;
+
+    By A.12 inequality to approximate the upper and lower bound as such:
+
+    k/n (<x=k INTEGRAL x=n> 1/x dx <= <i=k SUM i=n-1> 1/i <= <x=k-1 INTEGRAL x=n-1> 1/x dx )
+
+    evaluating the integral gives
+
+    k/n (ln n-ln k) <= Pr{S} <= k/n (ln(n-1) - ln(k-1));
+
+    differentiating k/n (ln n - ln k) with respect to k to get the maximum lower bound on Pr{S},
+
+    using the differentiation rule for products
+
+    D{f(x) * g(x) } = f(x) * g'(x) + f'(x) * g(x);
+
+    d( k/n * (ln n - ln k)) = kn * (-1/k) + (1/n) * (ln n - ln k) = (ln n - ln k - 1) / n
+
+    thus 1/n (ln n - ln k - 1);
+
+    set the derivative to 0:
+
+    1/n (ln n - ln k - 1) = 0;
+
+    ln k = ln n -1 = ln (n/e) or    k=n/e
+
+    so if we implement the strategy with k = n/e, we succeed in hiring our best qualified applicant with probability at least 1/e.
+

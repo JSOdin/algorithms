@@ -1,0 +1,122 @@
+D&C process
+1) Divide : divide the problem into a number of subproblems that are smaller instances of the same problem
+2) Conquer : solve the subproblems recursively if the size is big enough, else solve in a straightforward manner
+3) Combine : combine the solutions to the subproblems into one big solution for the original problem.
+
+Recursive case
+-when subproblems are large enough to be solved recursively
+
+Base case
+-subproblem size is too small to solve recursively, having "bottomed out"
+
+Recurrence equation
+-When an algorithm contains a recursive call to itself, we can often describe its
+ running time by a recurrence equation or recurrence, which describes the overall
+ running time on a problem of size n in terms of the running time on smaller inputs.
+
+ Running time
+ -we denote with T(n), the running time of input of n values.
+ -if problem size is small enough (that the solution doesnt require recursion),
+ say n<= c for some constant c, the straightforward solution takes constant time, which we write as THETA(1)
+
+ Recurrence
+ -let T(n) be running time of problem of size n
+ -let T(n/b) be running time of subproblem of size n/b
+ -let a*T(n/b) be running time of a subproblems
+ -if we take D(n) time to divide the problem into subproblems,
+ -if we take C(n) time to combine the solutions to the subproblems into one big solution, we get this:
+
+ T(n) = THETA(1)  if n<=C                 // straightforward
+      = aT(n/b) + D(n) + C(n) otherwise  // recursive
+
+ Recurrence of merge sort
+ -merge sort on one element takes constant time
+ -below is for n > 1 elements.
+
+ 1) Divide - computes the middle of the array, taking constant time. D(n) = Theta(1)
+ 2) conquer - recurisvely solve two subproblems, each of size n/2, contributing 2T(n/2) to running time
+ 3) combine - merge on an n-element subarray takes time THETA(n), so C(n) = THETA(n) // this is the merge step, of which running time was THETA(n).
+
+T(n) = THETA(1) if n=1
+     = 2T(n/2) + THETA(1) + THETA(n) = 2T(n/2) + THETA(n)  if n>1;  // THETA(1) is negligeble
+
+T(n) = THETA(1) if n=1
+     = aT(n/2) + THETA(n) if n>1
+
+Above recurrence's solution solved
+
+T(n) = THETA(n*log2 n);
+
+How do you get the solution?
+
+    1) rewrite the recurrence as
+
+        T(n) [ c if n=1             // c represents the time required to solve problem of size 1
+                                    // as well as the time per array elemnt of the divide and combine steps.
+             [  aT(n/2) + cn if n>1
+
+    2) make recursion tree as in p.38 to get running time of ((log 2 n) + 1 )* cn (cn = division time + combine time,  (log2 n)+1 = base 2 log of n plus 1. knowing each level after the first level has number of branches equal to a power of two,  we can discern number of total levels.
+
+    3)  for a tree with 2^i leaves, log2 2^i + 1 ==> gives number of levels = i+1 (for any value of i,  log2 2^i = i)
+
+    4) compute the total cost :  number of levels * cost of each =  ((log2 n) + 1)*cn = cn * lg n + cn;
+
+    5) ignoring the low order term cn and the constant c, get n * lg n and thus  THETA ( n * lg n );
+
+Using the master method to solve recurrences to obtain asymptotic THETA or big-O bounds on the solution
+
+    T(n) = aT(n/b) + f(n); // for a subproblems of size 1/b and divide/combine taking f(n) time.
+
+Maximum-subarray problem (pg. 68)
+    -maximize stock profit between a given period, buying and selling once.
+    -brute force : try all permutations of prices of any two-day pairs
+    -evaluate (n!) / (n-k)! permutations ==> not efficient
+
+Implementing the max-subarray solution
+    -make a solution that finds the maximum sum for
+        1) subarray that crosses the middle of the entire array input
+        2) subarray that is entire in the left half of array input
+        3) subarray that is entirely in the right half of array input
+    -solutions for left or right subarray parts come from the max-cross solution of their smaller parts. or the max-cross solution of the entire
+    subarray itself (decided in the "else" block of the subarray recursive call).
+
+Writing a recurrence for the max-subarray problem
+    1) when n=1
+    -when n=1, T(1) = THETA(1);
+    2)when n>1
+    -the "else" line takes constant time Theta(1)
+    -when n>1, runnign time is 2*T(n/2) one for each half of the original array.
+    -the max-cross solution takes T(n) time
+    -the end if/else block of the original takes T(1) time
+
+    so in total,
+
+    T(n) = {
+                if n = 1
+                    THETA(1)
+                if n > 1
+                     T(1) + 2*T(n/2) + THETA(n) + THETA(1) = 2*T(n/2) + THETA(n);
+             }
+
+    -recurrence for subarray prob is same as merge-sort.
+
+Square matrices
+
+    -multiplying two nxn matrices takes  THETA(n^3) running time.
+    -pg.77 implementation of matrix multiplication by divide and conquer recursion
+    -recurrence for it here:
+
+    T(1) = THETA(1);
+
+    T(n) = THETA(1) + 8T(n/2)+THETA(n^2) = 8T(n/2) + THETA(n^2);
+
+
+    T(n)  = {   THETA(1)  if n=1
+
+            }   8T(n/2) + THETA(n^2) if n<>1           // the 8T term is not a THETA term because it is recursive.and 2* THETA(n^2) combine into one.
+
+    -solution to above is T(n) = THETA(n^3) , no faster than the brute force method.
+    -THETA notations consume whatever constant there is
+
+    ex. THETA(4n^2) = THETA(n^2)
+

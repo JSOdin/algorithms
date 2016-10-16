@@ -1,0 +1,182 @@
+asymptotic efficiency
+    -efficiency derived from effect of large input numbers
+
+monotonicity
+
+    1) a function f(n) is monotonically increasing if m <= n implies f(m) <= f(n)
+    2) a function f(n) is monotonically decreasing if m <= n implies f(m) >= f(n)
+    3) a function f(n) is strictly increasing if m<n implies f(m) < f(n)
+    4) a function f(n) is strictly decreasing if m<n implies f(m) > f(n)
+
+Floor
+    -for any real number x, a floor is the greatest integer less than or equal to x
+    -ex. 2 can be a floor of 3
+
+Ceil
+    -for any real number x , a ceiling is the least integer greater than or equal to x
+    -ex. 4 can be a ceiling of 3
+
+    denoted by:   x-s < FLOOR(x) <= x <= CEIL(x) < x+1
+
+    -for any integer n, CEIL(n/2) + FLOOR(n/2) = n;
+
+    -for any real number x>=0 and integers a,b>0;
+
+    Ceil(Ceil(x/a)/b) = Ceil(x/(a*b));
+     Floor(Floor(x/a)/b) = Floor(x/(a*b));
+     Ceil(a/b) <= (a+(b-1)) / b;
+     Floor(a/b) >= (a-(b-1)) / b;
+
+     floor function f(x) = Floor(x) is monotonically increasing
+     ceiling function f(x) = Ceil(x) is also m.i.
+
+Modular arithmetic
+      -for any integer a and any positive integer n,  a%n or  amodn is the remainder/residue of the quotient a/n;
+
+      a%n = a-n*Floor(a/n);
+
+      0 <= a%n < n
+
+    if (a%n) == (b%n), then a === b
+
+    can also write this as
+
+    a===b (mod%n)
+
+    -also, a===b (mod n) if and only if n is a divisor of b-a.
+    -we write a !==b (mod n) if a is not equiv to b, modulo n
+
+Polynomials
+
+    -pg.55
+    -a function f(n) is polynomially bounded if  f(n) = O(n^k) for some constant k.
+    -o is the small o notation, which describes the minimum input for which the function or inequality holds.
+    -O is the Big O notation, describes the worst case scenario execution time required or space used
+    -Big O characterizes functions according to their growth rates.
+
+    f(n) = O(n^k)  ==> n^k is the growth rate.
+    -O is the "order" function, or the greatest influencing part of the function.
+    -a function's growth rate is the order of the function. in a function  f(n) = a*n^3+b*n*2+2; , the order is 3. the highest power.
+exponentials
+
+    -for all real a>0, m, n
+
+    a^0 = 1;
+    a^1 = a;
+
+    a^-1 = 1/a;
+    (a^m)^n = a^(mn)
+    (a^m)^n = (a^n)^m;
+    a^m*a^n = a^(m+n);
+
+Theta notation
+    f(n) = Theta(g(n)) or specifically   f(n) BELONGS TO Theta(g(n))
+
+    Theta(g(n)) denotes the set of functions that can be "sandwiched" between c1*g(n) and c2*g(n) where c1 and c2 are positive constants,
+    for sufficiently large n >= no .
+
+    -pg 45 "the equality symbol is abused as BELONGS to but theres a good reason for it"
+    -notation requires that f(n) is positive whenever n is sufficiently large.
+    -"asymptotically positive" means a function that is positive for all sufficiently large n.
+    -g(n) must also be asymptotically positive, or else the set THETA(g(n)) is empty.
+
+Using the Theta notation for finding worst case running time of an algorithm
+
+    -if the running time is defined  T(n) = 1/2 * n^2 - 3*n;
+
+    show that 1/2 * n^2 - 3^n <BELONGS TO> THETA(n^2)
+
+    -determine positive constants c1, c2, and no such that
+
+    c1*n^2 <= 1/2 * n^2 - 3^n <= c2*n^2; for all n<= no;
+
+    -divide by n^2 yields
+
+    c1 <= 1/2 - 3/n <= c2;
+
+    -for any n >= 1, c2 >=1/2 for the right inequality.
+    -for any n>=7 (since c1 cannot be negative), c1 <= 1/14
+    -since the inequalities are correct and thus can be "sandwiched" between c1^n2 and c2^n2,   1/2 * n^2 - 3^n BELONGS TO THETA(n^2);
+
+ Another example
+
+    -we want to verify that 6n^3 != THETA(n^2);
+
+    suppose  a c2 and no exist such that   6n^3 <= c2*n^2
+
+    -divide by n^2
+
+    n <= c2/6 ;
+
+    -this cannot hold for arbitarily large n.
+
+Why we can ignore the lower order terms of the polynomial when determining bounds via THETA function
+
+    -lower order terms , when divided out of the equation, vanish or are deemed insignificant
+    -so, c1 and c2 can be set to a slightly smaller value than the coefficient of the highest order term and a value that satisfies the right inequality, respectively.
+
+THETA constant functions
+    -are denoted THETA(n^0) or THETA(1);
+    -these are constant functions.
+
+O-notation
+    -THETA asymptotically bounds a function from above and below, but O only bounds from above (upper bound only)
+    -there is a set of f(n) that satisfies below.
+
+    O(g(n)) = {f(n): there exists positive constants c and no such that
+    0 <= f(n) <= c*g(n) for all n>=no}
+
+    f(n) BELONGS TO O(g(n)) or  f(n) = O(g(n)) (same meaning)
+
+    -f(n) = THETA(g(n)) implies f(n) = O(g(n)) because THETA notation gives upper bounds.
+
+    -in set notation,  THETA(g(n)) SUBSET O(g(n));
+
+    -since the O-notation provides an upper bound, use it upper bound the worst case running time.
+    for ex. insertion sort's doubly nested loop yields O(n2)
+
+Omega-notation
+    -provides an asymptotic lower bound
+
+    OMEGA(g(n)) = {f(n): there exists positive constants c and no such that
+    0 <= c*g(n) <= f(n) for all n>= no}
+
+Putting it together
+
+    if f(n) = O(g(n)) and f(n) = OMEGA(g(n)), then f(n) = THETA(g(n));
+
+Theta vs Omega and O
+
+    -Omega + O = Theta
+    -Theta is tight bound (requiring both bounds), while O is only upper bound and Omega is lower bound.
+
+Asymptotically tight
+    -can mean having two bounds, upper and lower
+    -can also mean be close to the upper or lower bound limits.
+    -if bounds are asymptotically tight, there are only a few constant c's that satisfy the inequalities.
+
+o-notation
+    -denotes an asymptotic upper bound (provided by O-notation) that is not asymptotically tight.
+    -ex. 2n^2 = O(n^2) is asympt. tight, but 2n = O(n^2) is not.
+
+    o(g(n)) = {f(n): for any positive constant c>0, there exists a constant no>0 such that
+    0<=f(n) <= c*g(n) for all n>=no}
+
+Difference between O and o-notation
+    -for O, there exists only some constants c>0 that 0<=f(n)<=c*g(n), but
+    for o, all c satisfies 0<=f(n)<=c*g(n)
+
+    -ex. 2n = o(n^2) but 2n^2 != o(n^2);
+    -o-notation is "flexibly asymptotically bound because many c's fit the ineqaulity"
+
+ Small-omega notation
+    -non-tight lower bound
+
+    f(n) BELONGS TO s-Omega(g(n)) if and only if g(n) BELONGS TO o(f(n));
+
+    w(g(n)) = {f(n): for any positive constant c>0, there exists a constant n>oo such that 0<=cg(n) < f(n) for all n>=no}
+
+    -ex.  n^2/2 = s-Omega(n) but 2*n^2/2 != s-Omega(n^2);
+
+Math notations
+    refer to pg.53 and beyond

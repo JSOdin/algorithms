@@ -1,0 +1,58 @@
+A heap (binary) data structure is one we can view in a nearly complete binary tree.
+    -a heap is represented by an array, and each node is represented by an element of the array.
+    -pg. 152 for diagram of a heap
+    -given an index i, compute its parent, and left/right children:
+
+    PARENT(i) {
+        return Math.floor(i/2);
+    }
+
+    LEFT(i){
+        return 2*i;
+    }
+
+    RIGHT(i){
+        return 2*i+1;
+    }
+
+    -a LEFT can be calculated with a left shift (<<) operator on i PLUS 1. left shift shifts the first operand the specific number of bits to the left.
+
+        ex.
+
+        9 (base 10) = 00000001001 (base 2) = 9  (base 10)
+        9 << 1      = 00000010010 (base 2) = 18 (base 10)
+
+    -a RIGHT can be calculated with a left shift (<<) operator on i, then adding two to it.
+
+        ex.
+
+        5 (base 10) = 00000000101 (base 2) = 5  (base 10)
+        5 << 1 + 1  = 00000001010 (base 2) + 2 = 12 (base 10)
+
+there are two types of heaps, max-heap and min-heap
+    -in each type, the values in the nodes satisfy a heap property, which depends on the type of heap
+    -in a max-heap, the max-heap property is that for every node i other than the root,
+    A[Parent(i)] >= A[i];
+    -the value of a node is at most the value of its parent.
+    -in a max-heap the largest element is stored at the root (top) and the subtree rooted at a node contains values no larger than the node that contains it.
+    -in a min-heap, the property is that for every node i other than the root,
+    A[Parent(i)] <= A[i];
+    -the smallest element in a min-heap is at the root.
+
+Heap-sort uses max-heaps. min-heaps implement priority queues
+
+Heap-size is the number of elements in the heap stored in the array (so an array may have greater number of elements than elements in the heap; including non-heap items)
+
+Size of a subtree is denoted "n" in below
+
+the children's subtrees of a subtree rooted at index i of size n is at most 2n/3. size count does not count the root node.
+
+Use the Max-Heapify in a bottom-uo manner to convert an array A[0..n-1] where n = A.length into a max heap
+    -Elements in the subarray A[[Math.floor(n/2)+1]...n] are all leaves of the tree (bottommost floor of a heap). each leaf is a 1-element heap to begin with
+
+    -function Buildmaxheap(A)
+        A.heap-size = A.length;
+        for (var i=Math.floor(A.length/2; i>=1; i--){
+            Max-heapify(A,i);
+        }
+

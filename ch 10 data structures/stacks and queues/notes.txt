@@ -1,0 +1,43 @@
+What is a stack/queue
+    -a dynamic set of elements in which the element removed from the set by the DELETE operation is prespecified
+
+What is a stack?
+    -the element deleted is the one most RECENTLY inserted
+    -last-in, first-out (LIFO policy)
+
+What is a queue?
+    -the element deleted is the one that has been in the set for the LONGEST time
+    -first-in, first-out (FIFO policy)
+
+Stack
+    -an array is a stack. elements are pushed into arrays by index order, and the end element is popped out first.
+    -analogous to spring loaded cateria tray stacks. bottommost is index 0, and uppermost is length-1 index. only the uppermost is accessible.
+    -in a stack implementation, A.top property indicates the most recently inserted element's index in a stack of stack A.
+    -a Stack implementation
+
+    [1,5,6,7] S.top = 3
+    [1,5,6,7,9] S.top = 4
+    [1,5,6,7][9] S.top = 3, after a POP operation. stack has size 4.
+
+    -when S.top is less than 0, stack is empty.
+    -underflow - when we attempt to pop an empty stack
+    -overflow - if S.top exceeds stack size - 1
+
+    -** if a collection of the same stack size is popped, its stack will be smaller by one but the collection will still have the same size.
+    -a collection [1,5,6,7,8,9] is popped but the array will keep the same size. only the stack becomes smaller
+
+Queue
+    -a queue has head and tail, head being the element with the highest priority in sequence and tail being the place where the next element will be inserted
+    -inserting elements in a queue places them at the tail, and a new tail is assigned to the empty space after the recently inserted
+    -popping a queue removes the head from queue and assigns the new head to the next priority element
+    -in an array of fixed size, if theres no room at the tail elements are inserted from the beginning of the array.
+    -operates like a line of customers waiting to pay at a cashier
+    -in summary, a queue resides in positions Q.head throughout Q.tail-1.
+
+    0 1 2 3 4 5 6 7 8 9
+   [3 5 - - - - - 5 2 1]
+        T         H         (H = head T = tail)
+
+   -when the queue is empty, Q.head = Q.tail = 1.
+   -if we attempt to dequeue an element from an empty queue, the queue underflows.
+   -if Q.head = Q.tail+1 (imagine the wrap-around in a restricted array size), the queue overflows when we attempt to enqueue an element.

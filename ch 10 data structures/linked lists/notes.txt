@@ -1,0 +1,25 @@
+Doubly linked list
+    -each element is an object with an attribute KEY and NEXT and PREV
+    -data that are referred to by pointers is called SATELLITE DATA.
+    -if x is an element,  x.prev points to the predecessor and x.next points to the next element. if x.prev is null, then x is the head. if x.next is null, x is the tail.
+    -a "key" is the value of an element.
+    -L.head is the first element of the list L. if L.head = null, L is empty.
+
+Several forms of a list
+    1) singly linked
+    2) doubly linked
+    3) sorted/unsorted
+    4) circular/non circular
+
+Singly linked
+    - omit the .prev pointer in each element
+
+sorted
+    -linear order of the list corresponds to the linear order of the keys stored in the elements of the list.
+    -minimum key element is the head, and max key element is the tail.
+
+unsorted
+    -head and tail can be any element and list appears in any order
+
+circular
+    -prev pointer of the head points to the tail and next of the tail points to head.
